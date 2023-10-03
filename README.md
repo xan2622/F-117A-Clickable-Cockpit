@@ -14,4 +14,4 @@ I hope to make this script stable enough and make it work on several computers (
 The main problem is that [DOSBox](https://www.dosbox.com/) "captures" the mouse cursor, making the Windows one invisible in-game.<br/>
 This doesn't happen with [DOSBox-X](https://dosbox-x.com/) because it displays the Windows mouse cursor over the (client) game area by default.
 
-This script is completely unofficial and not endorsed by MicroProse Software, Inc.
+This script is unofficial and not related to MicroProse Software, Inc.
