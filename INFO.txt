@@ -1,0 +1,60 @@
+----------------------------------------------------------------------------
+	"F-117A Clickable Cockpit" by xan2622
+	version 1.1.0
+	Released under the GPL 3.0 license
+---------------------------------------------------------------------------- 
+	This Autohotkey (v2) script is meant to be used alongside the game F-117A Nighthawk Stealth Fighter 2.0 
+	It allows to click on the cockpit buttons with the mouse cursor.
+----------------------------------------------------------------------------
+This INFO.txt file has several purposes: 
+- Give you informations about this "F-117A Clickable Cockpit" AutoHotKey v2 script.
+- It is also used as a workaround to check the current active keyboard layout, as I haven't managed to get it from the DOSBox window itself yet. 
+You may now close this Notepad window (or read further informations bellow). The AHK script only needed the Notepad window to be opened only once. 
+----------------------------------------------------------------------------
+TIPS (how to use this script): 
+- This script works best once you are already on the airport runway.
+- Click on an empty area of the cockpit. 
+- The first time the script is launched, you should see several yellow overlays over cockpit buttons. These overlays will disappear as soon as you click on buttons.
+- if you want to see the yellow overlays once more, just relaunch the AHK script.
+----------------------------------------------------------------------------
+	Here are the supported (clickable) buttons: 
+		Select Weapon, NAV/AIR/GND, HUD de-clutter, ILS, 
+		Chaff, Flare, Decoy, ECM, IRJ, 
+		MAP/TAC, MFD Zoom in, MFD Zoom out,
+		WAY, WPN, GRD, FLIR, BAY, AUTO, GEAR, FLAPS, BRAKE, Eject, 
+		Accelerate, Normal Speed, Pause, 
+		Maximum Power, Increase Power, Decrease Power, No Power, 
+		New Target, Select Target, 
+		CAM Ahead, CAM Rear, CAM Right, CAM Left
+	It's also possible to use the mouse wheel over the MFD to zoom in/out 
+	For convenience, WASD keys mimic the directionnal arrow keys.
+----------------------------------------------------------------------------
+ 	BUGS:
+	- sometimes, clicking on NAV/AIR/GND and MAP/TAC makes these buttons flicker
+	- fix IR Jammer hotkey with french keyboard layout
+	- sometimes, the user needs to left click once in the DOSBox windows to make clickable buttons work again
+	- while using a QWERTY keyboard and clicking on the 4 buttons at the left side of the right MFD, it makes the CAM Views interfere with the From-the-Cockpit-Viewing hotkeys
+---------------------------------------------------------------------------- 
+	TODO: 
+	- IN PROGRESS: detect the user keyboard layout (QWERTY, QWERTZ, AZERTY..) and change hotkeys accordingly
+	- add tooltips over cockpit buttons
+	- make the yellow overlays follow the DosBox window if it's moved over the Windows desktop https://www.autohotkey.com/boards/viewtopic.php?t=55113	
+	- make sure the script also work with DosBox-X (which by default displays the Windows mouse cursor but I have to make sure the image aspect ratio matches the DosBox one)
+	- Display areas/buttons with 75 opacity the first time, then if clicked, show them with 1 opacity (a workaround to display the mouse cursor)
+	- controversial (?): add buttons around the MFDs (by displaying images, not there in the original game) in order to group similar actions together
+	- Detect cockpit buttons with ImageSearch (slower) instead of hardcoding them with absolute positions
+	- add (convenient) extra buttons that are not in the original game: 50% Power (there's one free MFD button on the left MFD)
+----------------------------------------------------------------------------  
+	Just a few info, in case that helps understanding why the script doesn't work for you: 
+	My screen resolution is 3840 x 2160, 125% DPI scaling and I use an AZERTY keyboard. 
+	Here are my DosBox 0.74 settings (dosbox_F117A.conf): 
+		fullscreen=false
+		windowresolution=1280x960
+		output=openglnb
+		autolock=false
+		aspect=true
+		scaler=normal2x
+		cycles=40000
+		cycleup=1000
+		cycledown=1000
+----------------------------------------------------------------------------
