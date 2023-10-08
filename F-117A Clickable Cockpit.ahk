@@ -2,36 +2,53 @@
 
 ----------------------------------------------------------------------------
 	"F-117A Clickable Cockpit" by xan2622
-	version 1.1.0
+	version 1.2.0
 	Released under the GPL 3.0 license
 ----------------------------------------------------------------------------
  	This Autohotkey (v2) script is meant to be used alongside the game F-117A Nighthawk Stealth Fighter 2.0 
 	It allows to click on the cockpit buttons with the mouse cursor.
- ----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+	The INFO.txt file has several purposes: 
+	- Give you informations about this "F-117A Clickable Cockpit" AutoHotKey v2 script.
+	- It is also used as a workaround to check the current active keyboard layout, as I haven't managed to get it from the DOSBox window itself yet. 
+	You may now close this Notepad window (or read further informations bellow). The AHK script only needed the Notepad window to be opened only once. 
+----------------------------------------------------------------------------
+	TIPS (how to use this script): 
+	- This script works best once you are already on the airport runway.
+	- Click once on an empty area of the DOSBox window (on the cockpit or HUD).
+	- The first time the script is launched, you should see several yellow overlays over cockpit buttons. These overlays will disappear as soon as you click on buttons.
+	- If you want to see the yellow overlays once more, just relaunch the AHK script.
+----------------------------------------------------------------------------
  	Here are the supported (clickable) buttons: 
 		Select Weapon, NAV/AIR/GND, HUD de-clutter, ILS, 
 		Chaff, Flare, Decoy, ECM, IRJ, 
 		MAP/TAC, MFD Zoom in, MFD Zoom out,
 		WAY, WPN, GRD, FLIR, BAY, AUTO, GEAR, FLAPS, BRAKE, Eject, 
 		Accelerate, Normal Speed, Pause, 
-		Maximum Power, Increase Power, Decrease Power, No Power, 
+		Maximum Power, Increase Power (Throttle), Decrease Power (Throttle), No Power, 
 		New Target, Select Target, 
-		CAM Ahead, CAM Rear, CAM Right, CAM Left	 
-	It's also possible to use the mouse wheel over the MFD to zoom in/out 
-	For convenience, WASD keys mimic the directionnal arrow keys.
+		Tracking CAM Ahead, Tracking CAM Rear, Tracking CAM Right, Tracking CAM Left
+	For convenience: 
+	- it's also possible to use the mouse wheel over the MFD to zoom in/out
+	- WASD keys mimic the directionnal arrow keys
+	- pressing "E" fires missiles (mimicking the Enter key)
+	- clicking on the wide bar below the right MFD circles between Tracking CAM Ahead / CAM Rear / CAM Right / CAM Left
 ----------------------------------------------------------------------------
- 	BUGS:
+	BUGS:
+	- can't seem to reassign the Q key (A on AZERTY keyboards) to "open bay"
+	- the fake cursor is misplaced if the script is directly launched by double-clicking on the .ahk file (but is fine if the script is launched from Notepad++)
 	- sometimes, clicking on NAV/AIR/GND and MAP/TAC makes these buttons flicker
-	- fix IR Jammer hotkey with french keyboard layout
+	- sometimes clicking on DecreaseThrottle makes it react like MaximumPower (the culpit is probably "SetKeyDelay(20, 10)". Related to Bug #1
 	- sometimes, the user needs to left click once in the DOSBox windows to make clickable buttons work again
+	- while using a QWERTY keyboard and clicking on the 4 buttons at the left side of the right MFD, it makes the CAM Views interfere with the From-the-Cockpit-Viewing hotkeys
+	- 2 of the 3 buttons below the right MFD (Accel, Normal speed, Pause) interfere with the left MFD Zoom in/out
 ----------------------------------------------------------------------------
  	TODO: 
-	- IN PROGRESS: detect the user keyboard layout (QWERTY, QWERTZ, AZERTY..) and change hotkeys accordingly
+	- DONE (needs more tests): detect the user keyboard layout (QWERTY, QWERTZ, AZERTY..) and change hotkeys accordingly
 	- add tooltips over cockpit buttons
 	- make the yellow overlays follow the DosBox window if it's moved over the Windows desktop https://www.autohotkey.com/boards/viewtopic.php?t=55113	
-	- make sure the script also work with DosBox-X (which by default displays the Windows mouse cursor but I have to make sure the image aspect ratio matches the DosBox one)
-	- Display areas/buttons with 75 opacity the first time, then if clicked, show them with 1 opacity (a workaround to display the mouse cursor)
-	- controversial (?): add buttons around the MFDs (by displaying images, not there in the original game) in order to group similar actions together
+	- make sure the script also works with DosBox-X (which by default displays the Windows mouse cursor but I have to make sure the image aspect ratio matches the DosBox one)
+	- Replace overlays with modded cockpit buttons (ie: highlighted when hovered)
 	- Detect cockpit buttons with ImageSearch (slower) instead of hardcoding them with absolute positions
 	- add (convenient) extra buttons that are not in the original game: 50% Power (there's one free MFD button on the left MFD)
 ---------------------------------------------------------------------------- 
@@ -64,7 +81,7 @@
 #SingleInstance Force
 
 ; Delay between keypresses
-SetKeyDelay(0, 10)
+SetKeyDelay(20, 10)
 
 
 
@@ -110,7 +127,7 @@ Run "notepad.exe INFO.txt"
 	; Sleep 1000
 	WinWaitActive("ahk_exe notepad.exe", , 3)	
 	if WinExist("ahk_exe notepad.exe") {	
-		WinMove -6, 1000, 900, 460, "ahk_exe notepad.exe"
+		WinMove -6, 1000, 1200, 560, "ahk_exe notepad.exe"
 		WinActivate
 		; MsgBox ("Notepad window is active")
 	} else {
@@ -163,30 +180,51 @@ Run "notepad.exe INFO.txt"
 
 
 
-; Get the DOSBox/DOSBox-X position and dimensions
-if WinExist("ahk_exe dosbox.exe") or WinExist("ahk_exe dosbox-x.exe")
-	{
+
+if WinExist("ahk_exe dosbox.exe") {
 		WinActivate
+		
+		; Get the DOSBox position and dimensions
 		WinGetPos &DOSBox_WindowX, &DOSBox_WindowY , &DOSBox_WindowW, &DOSBox_WindowH, "DOSBox"
 		WinGetClientPos &DOSBox_WindowClientX, &DOSBox_WindowClientY, &DOSBox_WindowClientW, &DOSBox_WindowClientH, "DOSBox"
-		; MsgBox "DOSBox is at " DOSBox_WindowX "," DOSBox_WindowY " and its size is " DOSBox_WindowW "x" DOSBox_WindowH
-		; MsgBox "DOSBox is at " DOSBox_WindowClientX "," DOSBox_WindowClientY " and its client size is " DOSBox_WindowClientW "x" DOSBox_WindowClientH		
+			; MsgBox "DOSBox is at " DOSBox_WindowX "," DOSBox_WindowY " and its size is " DOSBox_WindowW "x" DOSBox_WindowH
+			; MsgBox "DOSBox's client is at " DOSBox_WindowClientX "," DOSBox_WindowClientY " and its client size is " DOSBox_WindowClientW "x" DOSBox_WindowClientH		
 				
-		; Moves the DosBox/DosBox-X window to 0,0 (the following line can be commented if you prefer to move the window somewhere else)
-		WinMove 0, 0, ,, "DOSBox"
+		; Moves the DosBox window to 0,0 (the following line can be commented if you prefer to move the window somewhere else)
+		WinMove -1, 0, ,, "DOSBox"
+		
+	} else if WinExist("ahk_exe dosbox-x.exe") {
+		WinActivate
+		
+		; Get the DOSBox-X position and dimensions		
+		WinGetPos &DOSBoxX_WindowX, &DOSBoxX_WindowY , &DOSBoxX_WindowW, &DOSBoxX_WindowH, "DOSBox-X"
+		WinGetClientPos &DOSBoxX_WindowClientX, &DOSBoxX_WindowClientY, &DOSBoxX_WindowClientW, &DOSBoxX_WindowClientH, "DOSBox-X"
+			; MsgBox "DOSBox-X is at " DOSBoxX_WindowX "," DOSBoxX_WindowY " and its size is " DOSBoxX_WindowW "x" DOSBoxX_WindowH
+			; MsgBox "DOSBox-X's client is at " DOSBoxX_WindowClientX "," DOSBoxX_WindowClientY " and its client size is " DOSBoxX_WindowClientW "x" DOSBoxX_WindowClientH		
+
+		; Moves the DosBox-X window to 0,0 (the following line can be commented if you prefer to move the window somewhere else)
+		WinMove -7, -6, ,, "DOSBox-X"		
+		
 	} else {
 		; Waits for 3 seconds for the DOSBox window to appear
+		; Not sure it's wanted: makes the script lag (wait) for 3 seconds 
+		/*
 		WinWaitActive("ahk_exe dosbox.exe", , 3) or WinWaitActive("ahk_exe dosbox-x.exe", , 3) 
 			if not WinExist("ahk_exe dosbox.exe") or WinExist("ahk_exe dosbox-x.exe") {
-			MsgBox ("DOSBox window hasn't been found within 3 seconds. The AHK script will now stop.")
+			MsgBox ("DOSBox/DOSBox-X window hasn't been found within 3 seconds. The AHK script will now stop.")
 			ExitApp
-			}		
+			}
+		*/	
 		}
 
 
 
 
 
+		
+
+
+
 
 
 
@@ -198,10 +236,8 @@ if WinExist("ahk_exe dosbox.exe") or WinExist("ahk_exe dosbox-x.exe")
 
 
 	
+	/*
 	
-	
-
-/*
 	
 SearchForNAVAIRGNDButtons:
 ; Makes sure the initial menus are passed (joystick, sound driver, mission briefing, etc) 
@@ -213,7 +249,7 @@ SearchForNAVAIRGNDButtons:
 	CoordMode("Pixel", "Screen") ; Pixel: Affects PixelGetColor, PixelSearch, and ImageSearch.
 	CoordMode("Mouse", "Screen") ; Mouse: Affects MouseGetPos, Click, MouseMove, MouseClick, and MouseClickDrag.
 
-	ImageSearchVar01 := !ImageSearch(&Position01X, &Position01Y, DOSBox_WindowClientX, DOSBox_WindowClientY, DOSBox_WindowClientW, DOSBox_WindowClientH, "*1 Images\NAVAIRGND_01.png")
+	ImageSearchVar01 := !ImageSearch(&Position01X, &Position01Y, DOSBox_WindowClientX, DOSBox_WindowClientY, DOSBox_WindowClientW, DOSBox_WindowClientH, "*1 E:\DONNEES_SEB\APPS\DEVELOPPEMENT\scripting\AutoHotkey\Mes Macros\F-117A\NAVAIRGND_01.png")
 	ErrorLevel := ImageSearchVar01
  
  
@@ -233,7 +269,7 @@ SearchForNAVAIRGNDButtons:
 			; MsgBox ("Image NAV/AIR/GND has been found at " Position01X "," Position01Y)
 			; SoundBeep 750, 500			
 			; MouseMove Position01X, Position01Y, 15
-			Sleep 1000
+		
 	
 	}
 		
@@ -256,20 +292,63 @@ SearchForNAVAIRGNDButtons:
 	
 	
 	
+	; Enables the script only when DOSBox/DOSBox-X is active (focussed)
+	; Prevents from hotkeys to be used outside the DOSBox/DOSBox-X window
+	#HotIf WinActive("DOSBox") or WinActive("DOSBox-X")
+	{
+	
+
 	
 	
 	
-; I would like the overlays to only appear when DOSBox is active
-; Bugged
-; if WinActive("ahk_exe dosbox.exe") or WinActive("ahk_exe dosbox-x.exe") {
+	
+
+		; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+		; Bypasses DOSBox isolation by displaying a cursor
+		; \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+		SetWorkingDir(A_ScriptDir)
+
+		; Create an invisible GUI that the picture is placed on:
+		myGui := Gui("-Caption +AlwaysOnTop +ToolWindow")
+		WinSetExStyle("+32", myGui)
+		myGui.MarginX   := myGui.MarginY := 0
+		myGui.BackColor := "2B2B2C"
+		WinSetTransColor(myGui.BackColor, myGui)
+		ogcPictureBG := myGui.Add("Picture", "x0 y0 vBG", "cursor.png")
+
+		SetTimer(mouseTrack, 20)
+		myGui.Show("NoActivate")
+
+		mouseTrack() {
+			SetWinDelay(-1)
+			; No need to define global variables in AutoHotKey 2
+			CoordMode("Mouse", "Screen")
+			MouseGetPos(&mouseX, &mouseY)
+			myGui.Move(mouseX, mouseY)
+		}
 
 
 
 
+
+
+
+
+
+
+
+
+
 	
+
+
+
+	
+		; --------------------------------------------------		
+		; OVERLAYS (displays rectangles over the cockpit buttons)
 		; --------------------------------------------------
-		
-		; Displays rectangles (highlight buttons) over the game window and allows to see the mouse cursor 
 
 		/*
 			; Displays a transparent frame over the inner area of DosBox
@@ -283,8 +362,8 @@ SearchForNAVAIRGNDButtons:
 
 		*/
 
-
-
+			
+			
 			
 			; Displays an area over the MAPTAC MFD for Mouse Wheel ScrollUp Zoom In (QWERTY: Z / QWERTZ: Y / AZERTY: W)
 			myMFDZoomInMouseWheel := Gui()
@@ -542,6 +621,14 @@ SearchForNAVAIRGNDButtons:
 			WinSetTransparent 75, myCAMLeftButton
 			myCAMLeftButton.Show("x645 y738 w24 h28")
 			
+			; Extra CAM button 
+			; Uses the wide bar below the right MFD to circle through Tracking CAMs (ahead, rear, left, right)
+			myExtraCAMButton := Gui()
+			myExtraCAMButton.BackColor := "Yellow"
+			myExtraCAMButton.Opt("+AlwaysOnTop -Caption +ToolWindow")
+			WinSetTransparent 75, myExtraCAMButton
+			myExtraCAMButton.Show("x761 y949 w156 h43")
+			
 			
 			
 			
@@ -638,9 +725,9 @@ SearchForNAVAIRGNDButtons:
 
 
 
-	; } else {
-	; MsgBox ("Hides all overlays")
-	; }
+		; } else {
+		; MsgBox ("Hides all overlays")
+		; }
 
 
 
@@ -658,15 +745,32 @@ SearchForNAVAIRGNDButtons:
 
 
 
-; The idea would be to enable the script only when DOSBox is active (focussed)
-#HotIf WinActive("DOSBox")
-	{
 
-	
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 		; **************************************************
+		; HOTKEYS
+		; **************************************************
+
+		; Global variables 
+		ClickCounter := 0
+
+
+
+
 
 		; Mouse Wheel ScrollUp Zoom In (QWERTY: Z / QWERTZ: Y / AZERTY: W)
 		WheelUp::
@@ -674,7 +778,7 @@ SearchForNAVAIRGNDButtons:
 				; https://www.autohotkey.com/docs/v2/lib/CoordMode.htm
 				; RelativeTo: 	Screen Window Client 
 				CoordMode("Pixel", "Screen") ; Pixel: Affects PixelGetColor, PixelSearch, and ImageSearch.
-				CoordMode("Mouse", "Screen") ; Mouse: Affects MouseGetPos, Click, MouseMove, MouseClick, a
+				CoordMode("Mouse", "Screen") ; Mouse: Affects MouseGetPos, Click, MouseMove, MouseClick, and MouseClickDrag.
 				
 				MouseGetPos(&mouseX, &mouseY)
 				
@@ -704,7 +808,7 @@ SearchForNAVAIRGNDButtons:
 				; https://www.autohotkey.com/docs/v2/lib/CoordMode.htm
 				; RelativeTo: 	Screen Window Client 
 				CoordMode("Pixel", "Screen") ; Pixel: Affects PixelGetColor, PixelSearch, and ImageSearch.
-				CoordMode("Mouse", "Screen") ; Mouse: Affects MouseGetPos, Click, MouseMove, MouseClick, a
+				CoordMode("Mouse", "Screen") ; Mouse: Affects MouseGetPos, Click, MouseMove, MouseClick, and MouseClickDrag.
 				
 				MouseGetPos(&mouseX, &mouseY)
 				
@@ -737,7 +841,7 @@ SearchForNAVAIRGNDButtons:
 				; https://www.autohotkey.com/docs/v2/lib/CoordMode.htm
 				; RelativeTo: 	Screen Window Client 
 				CoordMode("Pixel", "Screen") ; Pixel: Affects PixelGetColor, PixelSearch, and ImageSearch.
-				CoordMode("Mouse", "Screen") ; Mouse: Affects MouseGetPos, Click, MouseMove, MouseClick, a
+				CoordMode("Mouse", "Screen") ; Mouse: Affects MouseGetPos, Click, MouseMove, MouseClick, and MouseClickDrag.
 				
 				MouseGetPos(&mouseX, &mouseY)
 				
@@ -745,7 +849,7 @@ SearchForNAVAIRGNDButtons:
 				; Clickable areas (buttons) 
 
 				/* 
-					; Clickable Button: The Whole DosBox window
+					; Clickable Button: The Whole DOSBox/DOSBox-X window
 					ButtonX := 3 
 					ButtonY := 15 
 					Width   := 1025 
@@ -874,8 +978,7 @@ SearchForNAVAIRGNDButtons:
 						} else if KeyboardLayout == "QWERTZ" {
 							Send "{3}"
 							} else {
-								; Send "{"}"
-								; Send "{Raw}{"}"	; I need to find a workaround for this hotkey
+								Send("`"")
 								}
 					myIRJammerButton.Destroy()
 				}
@@ -1161,16 +1264,16 @@ SearchForNAVAIRGNDButtons:
 				myCAMRight_ButtonHeight := 29
 				if ((mouseX > myCAMRight_ButtonX && mouseX < myCAMRight_ButtonX+myCAMRight_ButtonWidth) && (mouseY > myCAMRight_ButtonY && mouseY < myCAMRight_ButtonY+myCAMRight_ButtonHeight)) {
 					if KeyboardLayout == "QWERTY" {
+						Send "{<}"
+						} else if KeyboardLayout == "QWERTZ" {
 							Send "{<}"
-							} else if KeyboardLayout == "QWERTZ" {
-								Send "{<}"
-								} else {
-									Send "{;}"
-									}		
+							} else {
+								Send "{;}"
+								}		
 					myCAMRightButton.Destroy()
 				}
 				
-				; CAM left (QWERTY: M / QWERTZ: M / AZERTY: ,)
+				; CAM Left (QWERTY: M / QWERTZ: M / AZERTY: ,)
 				; 4th MFD button from the top on the left side of the right MFD
 				myCAMLeft_ButtonX := 645
 				myCAMLeft_ButtonY := 738
@@ -1178,18 +1281,90 @@ SearchForNAVAIRGNDButtons:
 				myCAMLeft_ButtonHeight := 28
 				if ((mouseX > myCAMLeft_ButtonX && mouseX < myCAMLeft_ButtonX+myCAMLeft_ButtonWidth) && (mouseY > myCAMLeft_ButtonY && mouseY < myCAMLeft_ButtonY+myCAMLeft_ButtonHeight)) {
 					if KeyboardLayout == "QWERTY" {
+						Send "{m}"
+						} else if KeyboardLayout == "QWERTZ" {
 							Send "{m}"
-							} else if KeyboardLayout == "QWERTZ" {
-								Send "{m}"
-								} else {
-									Send "{,}"
-									}	
+							} else {
+								Send "{,}"
+								}	
 					myCAMLeftButton.Destroy()
 				}
+								
+				; Extra CAM button 
+				; Uses the wide bar below the right MFD to circle through Tracking CAMs (ahead, rear, left, right)
+				myExtraCAM_ButtonX := 761
+				myExtraCAM_ButtonY := 949
+				myExtraCAM_ButtonWidth := 156
+				myExtraCAM_ButtonHeight := 43
+				if ((mouseX > myExtraCAM_ButtonX && mouseX < myExtraCAM_ButtonX+myExtraCAM_ButtonWidth) && (mouseY > myExtraCAM_ButtonY && mouseY < myExtraCAM_ButtonY+myExtraCAM_ButtonHeight)) {
+							
+					; Circles through hotkeys (ahead --> rear --> right --> left --> ahead)
+							Global ClickCounter								
+						
+							if ClickCounter == 3 {
+								ClickCounter := 0
+							} else if ClickCounter !== 4 {
+								ClickCounter := ClickCounter + 1
+							}							
+
+							; Ahead
+							If ClickCounter == 0 {
+								if KeyboardLayout == "QWERTY" {
+											Send "{/}"
+											} else if KeyboardLayout == "QWERTZ" {
+												Send "{_}"
+												} else {
+													Send "{!}"
+													}								
+								; Tooltip("Ahead")
+								; SetTimer () => ToolTip(), -1500
+							}
+
+							; Rear
+							If ClickCounter == 1 {
+								if KeyboardLayout == "QWERTY" {
+											Send "{>}"
+											} else if KeyboardLayout == "QWERTZ" {
+												Send "{>}"
+												} else {
+													Send "{:}"
+													}	
+								; Tooltip("Rear")
+								; SetTimer () => ToolTip(), -1500
+							}
+							
+							; Right
+							If ClickCounter == 2 {
+								if KeyboardLayout == "QWERTY" {
+										Send "{<}"
+										} else if KeyboardLayout == "QWERTZ" {
+											Send "{<}"
+											} else {
+												Send "{;}"
+												}	
+								; Tooltip("Right")
+								; SetTimer () => ToolTip(), -1500
+							}
+							
+							; Left
+							If ClickCounter == 3 {
+								if KeyboardLayout == "QWERTY" {
+											Send "{m}"
+											} else if KeyboardLayout == "QWERTZ" {
+												Send "{m}"
+												} else {
+													Send "{,}"
+													}	
+								; Tooltip("Left")
+								; SetTimer () => ToolTip(), -1500
+							}					
+					
+					myExtraCAMButton.Destroy()
+				}
+
+				
 				
 			
-				
-				
 				; Volume adjust (Alt V)
 				
 				
@@ -1339,64 +1514,52 @@ SearchForNAVAIRGNDButtons:
 
 
 
-
-
-
-
-
-
-
-
-
 			}
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		; Exits the AHK script by right clicking
-		~RButton::
-		{
-			ExitApp
+		; Allows to press E to launch missiles (mimicks Enter Key)
+		$e:: Enter
+		
+		
+		
+		; Currently broken, conflicts with the WASD hotkeys below
+		/*
+		; Allows to press Q (or A on an AZERTY keyboard) to open the missiles bay
+		if (KeyboardLayout == "QWERTY") {
+				$q:: 8				
+			} else if (KeyboardLayout == "QWERTZ") {
+				$q:: 8				
+			} else {
+				$a:: Send "{_}"
 		}
-
-
-
-
-
-
-
-
-
-
+		*/
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 
 
 		; Allows to use WASD keys (ZQSD on an AZERTY keyboards) for movements
-		
-			; Delay between keypresses
-			; SetKeyDelay(100, 100)
-		
+	
 			; Up arrow (QWERTY: W / QWERTZ: W / AZERTY: Z)		
 			; Left arrow (QWERTY: A / QWERTZ: A / AZERTY: Q)
 			; Down arrow (QWERTY: S / QWERTZ: S / AZERTY: S)
-			; Right arrow (QWERTY: D / QWERTZ: D / AZERTY: D)
-						
+			; Right arrow (QWERTY: D / QWERTZ: D / AZERTY: D)						
 			
-			if (KeyboardLayout == "QWERTY") { 
+			if (KeyboardLayout == "QWERTY") {
 					; $q:: Send ("q")
 					; $z:: Send ("z")					
 					; $q:: Send "{q}"
@@ -1405,7 +1568,7 @@ SearchForNAVAIRGNDButtons:
 					$a:: Left
 					$s:: Down
 					$d:: Right
-				
+					
 				} else if (KeyboardLayout == "QWERTZ") {
 					; $q:: Send ("q")
 					; $z:: Send ("z")					
@@ -1415,7 +1578,7 @@ SearchForNAVAIRGNDButtons:
 					$a:: Left
 					$s:: Down
 					$d:: Right
-				
+					
 				} else {
 					; $a:: Send ("a")
 					; $w:: Send ("w")
@@ -1424,14 +1587,84 @@ SearchForNAVAIRGNDButtons:
 					$z:: Up
 					$q:: Left 
 					$s:: Down
-					$d:: Right
-						
+					$d:: Right			
 				}
 			
+
+
+
+		; Exits the AHK script by right clicking or by pressing ESC
+		~RButton:: ExitApp
+		~Esc:: ExitApp
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		; //////////////////////////////////////////////////
+		; TOOLTIPS
+		; //////////////////////////////////////////////////
+
+		/*
+
+			; Chaff 
+		
+			; https://www.autohotkey.com/docs/v2/lib/CoordMode.htm
+			; RelativeTo: 	Screen Window Client 
+			CoordMode("Pixel", "Screen") ; Pixel: Affects PixelGetColor, PixelSearch, and ImageSearch.
+			CoordMode("Mouse", "Screen") ; Mouse: Affects MouseGetPos, Click, MouseMove, MouseClick, and MouseClickDrag.
+			
+			MouseGetPos(&mouseX, &mouseY)
+				
+		
+		
+			myChaff_ButtonX := 14
+			myChaff_ButtonY := 742
+			myChaff_ButtonWidth := 104
+			myChaff_ButtonHeight := 44
+			if ((mouseX > myChaff_ButtonX && mouseX < myChaff_ButtonX+myChaff_ButtonWidth) && (mouseY > myChaff_ButtonY && mouseY < myChaff_ButtonY+myChaff_ButtonHeight)) {
+				Tooltip("Chaff")
+				SetTimer () => ToolTip(), -4000
+			
+			}
 			
 			
 			
-			
+				
+				
+		*/
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
