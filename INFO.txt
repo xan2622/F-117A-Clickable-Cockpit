@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------
 	"F-117A Clickable Cockpit" by xan2622
-	version 1.2.0
+	version 1.3.0
 	Released under the GPL 3.0 license
 ---------------------------------------------------------------------------- 
 	This Autohotkey (v2) script is meant to be used alongside the game F-117A Nighthawk Stealth Fighter 2.0 
@@ -34,20 +34,23 @@
  	BUGS:
 	- can't seem to reassign the Q key (A on AZERTY keyboards) to "open bay"
 	- the fake cursor is misplaced if the script is directly launched by double-clicking on the .ahk file (but is fine if the script is launched from Notepad++)
-	- sometimes, clicking on NAV/AIR/GND and MAP/TAC makes these buttons flicker
-	- sometimes clicking on DecreaseThrottle makes it react like MaximumPower (the culpit is probably "SetKeyDelay(20, 10)". Related to Bug #1
-	- sometimes, the user needs to left click once in the DOSBox windows to make clickable buttons work again
+	- sometimes, clicking on NAV/AIR/GND and MAP/TAC (and probably other buttons) makes these buttons flicker
+	- sometimes clicking on DecreaseThrottle makes it react like MaximumPower (could the culpit be "SetKeyDelay(20, 10)"?)
 	- while using a QWERTY keyboard and clicking on the 4 buttons at the left side of the right MFD, it makes the CAM Views interfere with the From-the-Cockpit-Viewing hotkeys
 	- 2 of the 3 buttons below the right MFD (Accel, Normal speed, Pause) interfere with the left MFD Zoom in/out
 ---------------------------------------------------------------------------- 
-TODO: 
+	TODO: 
 	- DONE (needs more tests): detect the user keyboard layout (QWERTY, QWERTZ, AZERTY..) and change hotkeys accordingly
-	- add tooltips over cockpit buttons
-	- make the yellow overlays follow the DosBox window if it's moved over the Windows desktop https://www.autohotkey.com/boards/viewtopic.php?t=55113	
-	- make sure the script also works with DosBox-X (which by default displays the Windows mouse cursor but I have to make sure the image aspect ratio matches the DosBox one)
+	- Add tooltips over cockpit buttons
+	- Hide overlays if mouse cursor is outside the DOSBox window 
+	- Make sure the script also works with DosBox-X (which by default displays the Windows mouse cursor but I have to make sure the image aspect ratio matches the DosBox one)
 	- Replace overlays with modded cockpit buttons (ie: highlighted when hovered)
-	- Detect cockpit buttons with ImageSearch (slower) instead of hardcoding them with absolute positions
-	- add (convenient) extra buttons that are not in the original game: 50% Power (there's one free MFD button on the left MFD)
+	- Test the script on other computers (other DOSBox and screen resolutions...)
+	- Activate the Eject button only after holding the left mouse button down for 3 seconds 
+	- Add an option in the script to enable "mouse movements": make the aircraft follow mouse mouvements if those occur over the HUD 
+	- Add (convenient) extra buttons that are not in the original game: such as "50% Throttle/Power" (there's one free MFD button on the left MFD)
+	- Reorganize some buttons (based on feedback, if any)
+	- Make an alternative AHK script to detect cockpit buttons with ImageSearch (slower) instead of hardcoding them with absolute positions
 ----------------------------------------------------------------------------  
 	Just a few info, in case that helps understanding why the script doesn't work for you: 
 	My screen resolution is 3840 x 2160, 125% DPI scaling and I use an AZERTY keyboard. 
