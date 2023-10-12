@@ -11,7 +11,8 @@ For convenience, WASD keys mimic the directionnal arrow keys.
 
 I hope to make this script stable enough and make it work on several computers (several screen resolutions, Windows DPI settings, etc).
 
-The main problem is that [DOSBox](https://www.dosbox.com/) "captures" the mouse cursor, making the Windows one invisible in-game.<br/>
-This doesn't happen with [DOSBox-X](https://dosbox-x.com/) because it displays the Windows mouse cursor over the (client) game area by default.
+The main problem of [DOSBox](https://www.dosbox.com/) is that it "captures" the mouse cursor, making the Windows one invisible in-game.<br/>
+This doesn't happen with [DOSBox-X](https://dosbox-x.com/) because it displays the Windows mouse cursor over the (client) game area by default.<br/>
+👉 I found a workaround which makes the mouse cursor visible while playing games (such as F-117A Nighhawk Stealth Fighter 2.0) in DOSBox.
 
 This script is unofficial and not related to MicroProse Software, Inc.
