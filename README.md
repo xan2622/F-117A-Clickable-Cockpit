@@ -4,10 +4,14 @@ This Autohotkey (v2) script is meant to be used alongside the game [F-117A Night
 It allows to click on the cockpit buttons with the mouse cursor.
 
 Here are the supported (clickable) buttons: <br/>
-Select Weapon, NAV/AIR/GND, HUD de-clutter, ILS, Chaff, Flare, Decoy, ECM, IRJ, MAP/TAC, MFD Zoom in, MFD Zoom out, WAY, WPN, GRD, FLIR, BAY, AUTO, GEAR, FLAPS, BRAKE, Eject, Accelerate, Normal Speed, Pause, Maximum Power, Increase Power, Decrease Power, No Power, ...
+Select Weapon, NAV/AIR/GND, HUD de-clutter, ILS, Chaff, Flare, Decoy, ECM, IRJ, MAP/TAC, MFD Zoom in, MFD Zoom out, WAY, WPN, GRD, FLIR, BAY, AUTO, GEAR, FLAPS, BRAKE, Eject, Accelerate, Normal Speed, Pause, Maximum Power, Increase Power, Decrease Power, No Power, Tracking CAM Ahead, Tracking CAM Rear, Tracking CAM Right, Tracking CAM Left, New Target, Select Target...
 
-It's also possible to use the mouse wheel over the left MFD to zoom in/out.<br/>
-For convenience, WASD keys mimic the directionnal arrow keys.
+For convenience:<br/>
+	- it's also possible to use the mouse wheel over the left MFD to zoom in/out<br/>
+	- WASD keys mimic the directionnal arrow keys<br/>
+	- pressing "E" fires missiles (mimicking the Enter key)<br/>
+	- clicking on the wide bar below the right MFD circles between Tracking CAM Ahead / CAM Rear / CAM Right / CAM Left<br/>
+	- there's a button on the left MFD that sets the throttle to 50% power<br/>
 
 I hope to make this script stable enough and make it work on several computers (several screen resolutions, Windows DPI settings, etc).
 
