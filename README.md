@@ -1,5 +1,9 @@
 # F-117A-Clickable-Cockpit
 
+[![video](https://github.com/xan2622/F-117A-Clickable-Cockpit/blob/main/screenshot.png)](https://github.com/xan2622/F-117A-Clickable-Cockpit/blob/main/video_01.mp4)
+
+Video: [Click here](https://github.com/xan2622/F-117A-Clickable-Cockpit/blob/main/video_01.mp4)
+
 This Autohotkey (v2) script is meant to be used alongside the game [F-117A Nighthawk Stealth Fighter 2.0](https://store.steampowered.com/app/328920/F117A_Nighthawk_Stealth_Fighter_20/).<br/>
 It allows to click on the cockpit buttons with the mouse cursor.
 
